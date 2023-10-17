@@ -1,6 +1,3 @@
-from typing import Any
-
-
 class testModel():
     def __init__(self , model):
         self.model = model
