@@ -2,7 +2,6 @@ import unittest
 from client import entityClient
 from testModel import testModel
 
-
 class TestNerClient(unittest.TestCase):
 
     def testEmpty(self):
