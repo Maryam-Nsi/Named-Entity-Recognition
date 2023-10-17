@@ -5,39 +5,39 @@ from testModel import testModel
 
 class TestNerClient(unittest.TestCase):
 
-    def test_get_ents_returns_dictionary_given_empty_string_causes_empty_spacy_doc_ents(self):
+    def testEmpty(self):
         model = testModel('eng')
         model.returnEntities([])
         ner = entityClient(model)
         ents = ner.getEntities("")
         self.assertIsInstance(ents, dict)
 
-    def test_get_ents_returns_dictionary_given_nonempty_string_causes_empty_spacy_doc_ents(self):
+    def testNonEmpty(self):
         model = testModel('eng')
         model.returnEntities([])
         ner = entityClient(model)
-        ents = ner.getEntities("Madison is a city in Wisconsin")
+        ents = ner.getEntities("Mary live in Iran")
         self.assertIsInstance(ents, dict)
 
-    def test_get_ents_given_spacy_PERSON_is_returned_serializes_to_Person(self):
+    def testPerson(self):
         model = testModel('eng')
-        doc_ents = [{'text': 'Laurent Fressinet', 'label_':'PERSON'}]
+        doc_ents = [{'text': 'Mary', 'label_':'PERSON'}]
         model.returnEntities(doc_ents)
         ner = entityClient(model)
         result = ner.getEntities('...')
-        expected_result = { 'ents': [{'ent': 'Laurent Fressinet', 'label': 'Person'}], 'html': "" }
+        expected_result = { 'ents': [{'ent': 'Mary', 'label': 'Person'}], 'html': "" }
         self.assertListEqual(result['ents'], expected_result['ents'])
 
-    def test_get_ents_given_spacy_NORP_is_returned_serializes_to_Group(self):
+    def testNORP(self):
         model = testModel('eng')
-        doc_ents = [{'text': 'Lithuanian', 'label_':'NORP'}]
+        doc_ents = [{'text': 'Chinese', 'label_':'NORP'}]
         model.returnEntities(doc_ents)
         ner = entityClient(model)
         result = ner.getEntities('...')
-        expected_result = { 'ents': [{'ent': 'Lithuanian', 'label': 'Group'}], 'html': "" }
+        expected_result = { 'ents': [{'ent': 'Chinese', 'label': 'Group'}], 'html': "" }
         self.assertListEqual(result['ents'], expected_result['ents'])
 
-    def test_get_ents_given_spacy_LOC_is_returned_serializes_to_Location(self):
+    def testLocation(self):
         model = testModel('eng')
         doc_ents = [{'text': 'the ocean', 'label_':'LOC'}]
         model.returnEntities(doc_ents)
@@ -46,33 +46,33 @@ class TestNerClient(unittest.TestCase):
         expected_result = { 'ents': [{'ent': 'the ocean', 'label': 'Location'}], 'html': "" }
         self.assertListEqual(result['ents'], expected_result['ents'])
 
-    def test_get_ents_given_spacy_LANGUAGE_is_returned_serializes_to_Langauge(self):
+    def testLangauge(self):
         model = testModel('eng')
-        doc_ents = [{'text': 'ASL', 'label_':'LANGUAGE'}]
+        doc_ents = [{'text': 'English', 'label_':'LANGUAGE'}]
         model.returnEntities(doc_ents)
         ner = entityClient(model)
         result = ner.getEntities('...')
-        expected_result = { 'ents': [{'ent': 'ASL', 'label': 'Language'}], 'html': "" }
+        expected_result = { 'ents': [{'ent': 'English', 'label': 'Language'}], 'html': "" }
         self.assertListEqual(result['ents'], expected_result['ents'])
 
-    def test_get_ents_given_spacy_GPE_is_returned_serializes_to_Location(self):
+    def testGPE(self):
         model = testModel('eng')
-        doc_ents = [{'text': 'Australia', 'label_':'GPE'}]
+        doc_ents = [{'text': 'Iran', 'label_':'GPE'}]
         model.returnEntities(doc_ents)
         ner = entityClient(model)
         result = ner.getEntities('...')
-        expected_result = { 'ents': [{'ent': 'Australia', 'label': 'Location'}], 'html': "" }
+        expected_result = { 'ents': [{'ent': 'Iran', 'label': 'Location'}], 'html': "" }
         self.assertListEqual(result['ents'], expected_result['ents'])
 
 
-    def test_get_ents_given_multiple_ents_serializes_all(self):
+    def testMultiple(self):
         model = testModel('eng')
-        doc_ents = [{'text': 'Australia', 'label_':'GPE'},
-                    {'text': 'Judith Polgar', 'label_':'PERSON'}]
+        doc_ents = [{'text': 'Iran', 'label_':'GPE'},
+                    {'text': 'Mary', 'label_':'PERSON'}]
         model.returnEntities(doc_ents)
         ner = entityClient(model)
         result = ner.getEntities('...')
         expected_result = { 'ents':
-                [{'ent': 'Australia', 'label': 'Location'},
-                 {'ent': 'Judith Polgar', 'label': 'Person'}], 'html': "" }
+                [{'ent': 'Iran', 'label': 'Location'},
+                 {'ent': 'Mary', 'label': 'Person'}], 'html': "" }
         self.assertListEqual(result['ents'], expected_result['ents'])
