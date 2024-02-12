@@ -2,5 +2,7 @@ class user:
    pass
 
 
-class meme:
+class azizi:
    pass
+
+
